@@ -7,7 +7,7 @@
 <body>
     {% for message in messages %}
     <h3>{{message.id}}. from {{message.sender}}</h3>
-    <p>message to {{message.recipient}}:<p>"{{message.message}}"</p></p>
+    <p>message to <b>{{message.recipient}}</b>, created <i>{{message.created}}</i>:<p>"{{message.message}}"</p></p>
     {% endfor %}
 </body>
 </html>

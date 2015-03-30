@@ -1,7 +1,10 @@
 # coding: utf-8
 
 from flask import Flask, request, json, g, render_template
+
 import sqlite3
+import time
+import datetime
 
 DATABASE = '/tmp/infobip.db'
 
@@ -14,7 +17,8 @@ def send_message():
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 sender text,
                 recipient text,
-                message text
+                message text,
+                created integer
             )''')
 
     content_type = request.headers.get("Content-Type", "")
@@ -59,7 +63,12 @@ def get_messages():
 
 def send_sms(sender, recipient, message):
 
-    message_id = insert_db(u"INSERT INTO messages VALUES (?,?,?,?)", args=(None, sender, recipient, message))
+    message_id = insert_db(
+        u"INSERT INTO messages VALUES (?,?,?,?,?)",
+        args=(
+            None, sender, recipient, message, int(time.time())
+        )
+    )
 
     return {
         "status": str(0),
@@ -116,7 +125,10 @@ def insert_db(query, args=()):
 def dict_factory(cursor, row):
     d = {}
     for idx,col in enumerate(cursor.description):
-        d[col[0]] = row[idx]
+        if col[0] == "created":
+            d[col[0]] = datetime.datetime.fromtimestamp(row[idx]).strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            d[col[0]] = row[idx]
     return d
 
 
