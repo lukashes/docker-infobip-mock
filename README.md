@@ -12,7 +12,7 @@ Base OS is Ubuntu 14.04.
 
 ## Usage:
 
-Pull this repository and buid docker-image into repository path:
+Pull this repository and build docker-image into repository path:
 
 ```bash
 docker build -t lukashes/infobip-mock .
@@ -30,5 +30,5 @@ docker run -P lukashes/infobip-mock
 
 ## Checking messages:
 
-Into your browser open http://localhost:5000/messages and you will be able to see all messages. If you want to delete it - just kill docker conteiner and run it again.
-
+In your browser open http://localhost:5000/messages and you will see all messages.
+If you want to delete it - just kill docker container and run it again.
