@@ -27,30 +27,22 @@ def send_message():
         raise Exception(u'Expected "application/json" content-type, got "%s"' % content_type)
 
     data = json.loads(request.data)
-
     check_required(data, ("authentication", "messages"))
-
     check_required(data["authentication"], ("username", "password"))
 
     messages = data.get("messages")
-
     check_list(messages, "messages")
 
     message = messages[0]
-
     check_required(message, ("sender", "text", "recipients"))
 
     recipients = message["recipients"]
-
     check_list(recipients, "recipients")
 
     recipient = recipients[0]
-
     check_required(recipient, ("gsm",))
 
-    results = []
-
-    results.append(send_sms(message["sender"], recipient["gsm"], message["text"]))
+    results = [send_sms(message["sender"], recipient["gsm"], message["text"])]
 
     return json.dumps({"results": results})
 
